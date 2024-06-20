@@ -30,6 +30,14 @@ jobs:
           path: main
           submodules: recursive
 
+      - name: Prepare YouTube Music iPA
+        id: prepare_youtube_music
+        run: |
+          wget "$YOUTUBE_MUSIC_URL" --no-verbose -O main/YouTubeMusic.ipa
+
+        env:
+          YOUTUBE_MUSIC_URL: ${{ inputs.decrypted_youtube_music_url }}    
+
       - name: Install Dependencies
         run: brew install ldid dpkg make
               
@@ -85,14 +93,6 @@ jobs:
           cd ${{ github.workspace }}/main
           git clone https://github.com/Al4ise/Azule 
           sudo ln -sf ~/Azule/azule /usr/local/bin/azule
-
-      - name: Prepare YouTube Music iPA
-        id: prepare_youtube_music
-        run: |
-          wget "$YOUTUBE_MUSIC_URL" --no-verbose -O main/YouTubeMusic.ipa
-
-        env:
-          YOUTUBE_MUSIC_URL: ${{ inputs.decrypted_youtube_music_url }}    
 
       - name: Build Tweak for Sideloading
         id: build_package
